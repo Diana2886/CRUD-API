@@ -1,46 +1,13 @@
-import { IncomingMessage, ServerResponse } from 'http'
 import { users } from '../models/userModel'
-import {
-  isUserIdValid,
-  parseRequestBody,
-  isBodyInvalid
-} from '../utils/helpers'
 import { v4 as uuidv4 } from 'uuid'
+import { User } from '../shared/userInterface'
 
-export const getAllUsers = (_: IncomingMessage, res: ServerResponse) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(users))
-}
+export const getAllUsers = () => users
 
-export const getUserById = (
-  _: IncomingMessage,
-  res: ServerResponse,
-  userId: string | undefined
-) => {
-  if (!isUserIdValid(userId)) {
-    res.writeHead(400, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'Invalid user ID' }))
-  }
+export const getUserById = (userId: string) =>
+  users.find((user) => user.id === userId)
 
-  const user = users.find((user) => user.id === userId)
-
-  if (user) {
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(user))
-  } else {
-    res.writeHead(404, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify({ message: 'User not found' }))
-  }
-}
-
-export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
-  const body = await parseRequestBody(req)
-
-  if (isBodyInvalid(body)) {
-    res.writeHead(400, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'Invalid user data' }))
-  }
-
+export const createUser = (body: Omit<User, 'id'>) => {
   const newUser = {
     id: uuidv4(),
     username: body.username,
@@ -49,56 +16,23 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   }
 
   users.push(newUser)
-
-  res.writeHead(201, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(newUser))
+  return newUser
 }
 
-export const updateUser = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-  userId: string | undefined
-) => {
-  const userIndex = users.findIndex((user) => user.id === userId)
-  if (!isUserIdValid(userId)) {
-    res.writeHead(400, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'Invalid user ID' }))
-  }
+export const updateUser = (userId: string, body: Omit<User, 'id'>) => {
+  users.forEach((user, index) => {
+    if (user.id === userId) {
+      users[index] = { ...user, ...body }
+    }
+  })
 
-  if (userIndex === -1) {
-    res.writeHead(404, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'User not found' }))
-  }
-
-  const body = await parseRequestBody(req)
-
-  if (isBodyInvalid(body)) {
-    res.writeHead(400, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'Invalid user data' }))
-  }
-
-  users[userIndex] = { ...users[userIndex], ...body }
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(users[userIndex]))
+  return getUserById(userId)
 }
 
-export const deleteUser = (
-  _: IncomingMessage,
-  res: ServerResponse,
-  userId: string | undefined
-) => {
-  if (!isUserIdValid(userId)) {
-    res.writeHead(400, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'Invalid user ID' }))
-  }
-
-  const userIndex = users.findIndex((user) => user.id === userId)
-  if (userIndex === -1) {
-    res.writeHead(404, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ message: 'User not found' }))
-  }
-
-  users.splice(userIndex, 1)
-  res.writeHead(204)
-  res.end()
+export const deleteUser = (userId: string) => {
+  users.forEach((user, index) => {
+    if (user.id === userId) {
+      users.splice(index, 1)
+    }
+  })
 }
