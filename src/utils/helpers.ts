@@ -24,7 +24,7 @@ export const parseRequestBody = async (req: IncomingMessage) => {
   })
 }
 
-export const isBodyInvalid = (user: User) => {
+export const isPostBodyInvalid = (user: User) => {
   return (
     !user.username ||
     typeof user.username !== 'string' ||
@@ -32,5 +32,16 @@ export const isBodyInvalid = (user: User) => {
     typeof user.age !== 'number' ||
     !Array.isArray(user.hobbies) ||
     !user.hobbies.every((hobby) => typeof hobby === 'string')
+  )
+}
+
+export const isPutBodyInvalid = (user: Partial<User>) => {
+  return (
+    (user.username !== undefined &&
+      (typeof user.username !== 'string' || user.username.trim() === '')) ||
+    (user.age !== undefined && typeof user.age !== 'number') ||
+    (user.hobbies !== undefined &&
+      (!Array.isArray(user.hobbies) ||
+        !user.hobbies.every((hobby) => typeof hobby === 'string')))
   )
 }

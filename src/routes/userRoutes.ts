@@ -7,7 +7,8 @@ import {
   deleteUser
 } from '../controllers/userController'
 import {
-  isBodyInvalid,
+  isPostBodyInvalid,
+  isPutBodyInvalid,
   isUserIdValid,
   parseRequestBody
 } from '../utils/helpers'
@@ -39,7 +40,7 @@ export const userRoutes = async (req: IncomingMessage, res: ServerResponse) => {
   } else if (req.method === 'POST' && req.url === '/api/users') {
     const body = await parseRequestBody(req)
 
-    if (isBodyInvalid(body)) {
+    if (isPostBodyInvalid(body)) {
       res.writeHead(400, { 'Content-Type': 'application/json' })
       return res.end(JSON.stringify({ message: 'Invalid user data' }))
     }
@@ -63,7 +64,7 @@ export const userRoutes = async (req: IncomingMessage, res: ServerResponse) => {
 
     const body = await parseRequestBody(req)
 
-    if (isBodyInvalid(body)) {
+    if (isPutBodyInvalid(body)) {
       res.writeHead(400, { 'Content-Type': 'application/json' })
       return res.end(JSON.stringify({ message: 'Invalid user data' }))
     }
