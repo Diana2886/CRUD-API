@@ -12,6 +12,16 @@ export default [
       }
     }
   },
+  {
+    overrides: [
+      {
+        files: ['tests/**/*'],
+        env: {
+          jest: true
+        }
+      }
+    ]
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended
 ]
