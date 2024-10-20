@@ -8,12 +8,7 @@ export const getUserById = (userId: string) =>
   users.find((user) => user.id === userId)
 
 export const createUser = (body: Omit<User, 'id'>) => {
-  const newUser = {
-    id: uuidv4(),
-    username: body.username,
-    age: body.age,
-    hobbies: body.hobbies || []
-  }
+  const newUser: User = { id: uuidv4(), ...body }
 
   users.push(newUser)
   return newUser
