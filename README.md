@@ -88,6 +88,22 @@ Or:
 
 This command will build and run the application.
 
+3. Start multiple instances of the application using the Node.js Cluster API:
+
+`npm run start:multi`
+
+Or:
+
+`yarn start:multi`
+
+4. Start tests:
+
+`npm run test`
+
+Or:
+
+`yarn test`
+
 ## API Endpoints
 
 ### Base URL
