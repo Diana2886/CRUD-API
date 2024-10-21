@@ -25,11 +25,11 @@ This is a Node.js application for managing users with basic CRUD (Create, Read, 
 ## Technologies
 
 - Node.js
-- Express.js (Optional, if used)
-- TypeScript (Optional, if used)
-- Nodemon (for auto-reloading in development)
-- ESLint and Prettier (for code formatting)
-- Vitest or Jest (for testing, if used)
+- TypeScript
+- Nodemon
+- ESLint and Prettier
+- Jest
+- Webpack
 
 ### Prerequisites
 
@@ -42,13 +42,17 @@ Before you begin, ensure you have the following installed on your machine:
 
 1. Clone the repository:
 
-   `git clone https://github.com/your-username/your-repository-name.git`
+   `git clone https://github.com/Diana2886/CRUD-API.git`
 
-2. Navigate to the project directory:
+2. Checkout the branch to dev:
 
-   `cd your-repository-name`
+   `git checkout dev`
 
-3. Install dependencies:
+3. Navigate to the project directory:
+
+   `cd crud-api`
+
+4. Install dependencies:
 
 If you're using npm:
 
@@ -64,11 +68,11 @@ Or with yarn:
 
 If you want to run the application with auto-reload (using nodemon):
 
-`npm run dev`
+`npm run start:dev`
 
 Or:
 
-`yarn dev`
+`yarn start:dev`
 
 This will start the application and watch for file changes.
 
@@ -76,11 +80,11 @@ This will start the application and watch for file changes.
 
 If you're running the server in a production environment:
 
-`npm start`
+`npm run start:prod`
 
 Or:
 
-`yarn start`
+`yarn start:prod`
 
 This command will build and run the application.
 
@@ -90,7 +94,7 @@ This command will build and run the application.
 
 `http://localhost:<PORT>/api/users`
 
-Value of port on which application is running is stored in .env file
+The value of port on which application is running is stored in .env file
 
 ### Routes
 
